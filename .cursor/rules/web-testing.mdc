@@ -1,0 +1,45 @@
+---
+description: Testing Standards (React/Next.js)
+globs: "*"
+---
+# Web Testing Standards
+
+<rule>
+name: web_testing
+description: Guidelines for front-end testing in React/Next.js
+filters:
+  - type: event
+    pattern: "file_create|file_modify"
+
+actions:
+  - type: suggest
+    message: |
+      ***React/Next.js Testing Guidelines***
+
+      **Recommended Tooling**
+      • Use Jest + React Testing Library for unit/integration tests.
+      • For end-to-end tests, consider Playwright or Cypress.
+
+      **Test Placement**
+      • Store tests alongside source files (`components/Modal/__tests__/Modal.test.tsx`) or in a `__tests__/` folder.
+      • Keep naming consistent: `.test.tsx` or `.spec.tsx`.
+
+      **Test Coverage**
+      • Write tests for critical logic (e.g. user flows, form submissions, data fetching).
+      • Aim for coverage on:
+        - Reusable custom hooks
+        - Complex components that handle important logic
+        - API route handlers (via integration tests or Next test Mocks)
+
+      **Mocking & Supabase**
+      • Use `@testing-library/react` for DOM queries.
+      • For Supabase calls, mock out network requests or use a test instance if possible.
+
+      **Continuous Integration**
+      • Run your tests in CI (GitHub Actions, etc.) on every pull request to catch regressions early.
+      • Keep tests fast—split heavy E2E tests if they become slow.
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>

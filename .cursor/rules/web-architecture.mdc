@@ -1,0 +1,54 @@
+---
+description: Next.js Architecture & Supabase Usage
+globs: "*"
+---
+# Web Architecture (Next.js + Supabase)
+
+<rule>
+name: web_architecture
+description: Guidelines on folder structure, environment variables, and Supabase integration
+filters:
+  - type: event
+    pattern: "file_create|file_modify"
+
+actions:
+  - type: suggest
+    message: |
+      ***Next.js + Supabase Architecture Guidelines***
+
+      **Folder Structure**
+      • Keep app-wide utilities in `lib/` (e.g. `lib/supabaseClient.ts`).
+      • Store all environment variables in `.env.local` (never commit `.env*` to VCS).
+      • If using Next.js 13 “App Router,” maintain a clear hierarchy in `app/` (e.g. `app/dashboard/page.tsx`).
+
+      **API Routes & Backend Logic**
+      • Use Next.js API routes in `pages/api/` or `app/api/` for server-side logic (user registration, login).
+      • Maintain clean separation: 
+        - `POST /api/register` handles creating user, 
+        - `POST /api/login` handles sign-in, etc.
+      • For Supabase, import a single, shared client from `lib/supabaseClient.ts` to keep config DRY.
+
+      **Supabase Auth & DB**
+      • Use built-in Supabase Auth if desired—never embed secrets in client code.
+      • On the server side, read your `SUPABASE_SERVICE_ROLE_KEY` or admin privileges from environment variables only.
+      • On the client side, use the public `SUPABASE_ANON_KEY` for non-privileged queries.
+
+      **Environment Variables**
+      • Keep secrets (API keys, DB passwords) strictly in `.env.local`.
+      • Access them via `process.env.MY_SECRET_KEY`; do not log these anywhere.
+      • If deploying to Vercel or similar, set these environment variables in the project settings.
+
+      **Security & Validation**
+      • Validate incoming data in API routes (e.g. check required fields).
+      • Use Next.js middleware or server components to protect authenticated pages.
+      • For front-end forms, do minimal client-side checks, but rely on server checks as final authority.
+
+      **Scalability & Future Growth**
+      • For large codebases, consider using a monorepo approach if you split front-end from microservices.
+      • Use Next.js dynamic routes or nested routes for complex data structures.
+      • Keep your file naming consistent and descriptive (`[slug].tsx`, `[id].tsx`, etc.).
+
+metadata:
+  priority: high
+  version: 1.0
+</rule>
